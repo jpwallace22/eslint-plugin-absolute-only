@@ -1,10 +1,7 @@
-"use strict";
-
-const fs = require( "fs");
-const path = require( "path");
+const fs = require("fs");
+const path = require("path");
 
 function findDirWithFile(filename) {
-  // start at our CWD and traverse upwards until we either hit the root "/" or find a directory with our file
   let dir = path.resolve(filename);
   do {
     dir = path.dirname(dir);
@@ -21,7 +18,6 @@ function getBaseUrl() {
   const baseDir = findDirWithFile("package.json");
   let url = "";
 
-  // tsconfig.json will override jsconfig.json
   ["jsconfig.json", "tsconfig.json"].forEach(filename => {
     const fpath = path.join(baseDir, filename);
     if (fs.existsSync(fpath)) {
@@ -36,9 +32,10 @@ function getBaseUrl() {
 }
 
 module.exports.rules = {
-  "only-absolute-imports": {
+  imports: {
     meta: {
       fixable: true,
+      type: "layout",
     },
     create: function (context) {
       const baseDir = findDirWithFile("package.json");
@@ -47,7 +44,7 @@ module.exports.rules = {
       return {
         ImportDeclaration(node) {
           const source = node.source.value;
-          if (source.startsWith(".")) {
+          if (source.startsWith("..")) {
             const filename = context.getFilename();
 
             const absolutePath = path.normalize(

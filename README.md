@@ -8,9 +8,9 @@ You must have a `baseUrl` defined in either `tsconfig.json` or `jsconfig.json`. 
 
 ## Setup
 
-- `npm i --save-dev eslint-plugin-absolute-imports`
-- Add `eslint-plugin-absolute-imports` to your eslint `plugins` section
-- Add `absolute-imports/only-absolute-imports` to your eslint `rules` section
+- `npm i eslint-plugin-absolute-only --save-dev ` OR `yarn add eslint-plugin-absolute-only --save-dev`
+- Add `"eslint-plugin-absolute-only"` to your eslint `plugins` section
+- Add `"absolute-only/imports": "error"` to your eslint `rules` section
 
 ## License
 

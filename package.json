@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-absolute-only",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "main": "index.js",
   "dependencies": {},
   "description": "Eslint rule enforcing absolute imports with --fix ability",
@@ -14,7 +14,7 @@
     "Linters"
   ],
   "repository": {
-    "url": "https://www.github.com/jchen1/eslint-plugin-absolute-imports"
+    "url": "https://github.com/jpwallace22/eslint-plugin-absolute-only"
   },
   "keywords": [
     "eslint",

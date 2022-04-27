@@ -1,0 +1,24 @@
+{
+  "name": "eslint-plugin-absolute-only",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {},
+  "description": "Eslint rule enforcing absolute imports with --fix ability",
+  "license": "MIT",
+  "author": {
+    "email": "jpwallace22@gmail.com",
+    "name": "Justin Wallace",
+    "url": "https://www.justinwallace.dev"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "repository": {
+    "url": "https://www.github.com/jchen1/eslint-plugin-absolute-imports"
+  },
+  "keywords": [
+    "eslint",
+    "imports",
+    "eslint-plugin"
+  ]
+}

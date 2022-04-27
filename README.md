@@ -1,4 +1,4 @@
-# eslint-plugin-absolute-imports
+# eslint-plugin-absolute-only
 
 A (zero-dependency!) eslint plugin that enforces absolute imports on your codebase.
 

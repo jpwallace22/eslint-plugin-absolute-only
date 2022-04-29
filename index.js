@@ -44,7 +44,7 @@ module.exports.rules = {
       return {
         ImportDeclaration(node) {
           const source = node.source.value;
-          if (source.startsWith("..")) {
+          if (source.startsWith(".")) {
             const filename = context.getFilename();
 
             const absolutePath = path.normalize(

@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-absolute-only",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "index.js",
   "dependencies": {},
   "description": "Eslint rule enforcing absolute imports with --fix ability",

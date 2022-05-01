@@ -12,3 +12,9 @@
 ## 0.0.5 (04/29/22)
 
 - Due to request, removed root relative again
+
+## 1.0.0 (05/01/22)
+
+- First full stable release
+- Add option for allowing root relative or not
+- updated file structure and refactored to Typescript

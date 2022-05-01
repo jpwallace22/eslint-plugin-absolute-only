@@ -1,8 +1,8 @@
 {
   "name": "eslint-plugin-absolute-only",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "./dist/index.js",
-  "description": "Eslint rule enforcing absolute imports with --fix ability",
+  "description": "Lightweight eslint plugin for enforcing absolute imports (with or w/o root relative) with --fix ability",
   "license": "MIT",
   "author": {
     "email": "jpwallace22@gmail.com",
@@ -19,7 +19,8 @@
     "eslint",
     "imports",
     "eslint-plugin",
-    "absolute"
+    "absolute",
+    "root relative"
   ],
   "scripts": {
     "build": "npx tsc"

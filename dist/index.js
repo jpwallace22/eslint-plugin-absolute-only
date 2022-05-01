@@ -25,7 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = __importStar(require("fs"));
 var path = __importStar(require("path"));
-function findDirWithFile(filename) {
+var findDirWithFile = function (filename) {
     var dir = path.resolve(filename);
     do {
         dir = path.dirname(dir);
@@ -34,8 +34,8 @@ function findDirWithFile(filename) {
         throw "exit";
     }
     return dir;
-}
-function getBaseUrl(baseDir) {
+};
+var getBaseUrl = function (baseDir) {
     var url = "";
     ["jsconfig.json", "tsconfig.json"].forEach(function (filename) {
         var fpath = path.join(baseDir, filename);
@@ -47,12 +47,13 @@ function getBaseUrl(baseDir) {
         }
     });
     return path.join(baseDir, url);
-}
-var noRootRelative = function (node, context) {
+};
+var inspectImport = function (node, context) {
     var baseDir = findDirWithFile("package.json");
     var baseUrl = getBaseUrl(baseDir);
+    var options = context.options[0] || {};
     var source = node.source.value;
-    if (source.startsWith(".")) {
+    if (source.startsWith(options.allowRootRelative ? ".." : ".")) {
         var filename = context.getFilename();
         var absolutePath = path.normalize(path.join(path.dirname(filename), source));
         var expectedPath_1 = path.relative(baseUrl, absolutePath);
@@ -72,11 +73,22 @@ module.exports.rules = {
         meta: {
             fixable: "code",
             type: "layout",
+            schema: [
+                {
+                    type: "object",
+                    properties: {
+                        allowRootRelative: {
+                            type: "boolean",
+                        },
+                    },
+                    additionalProperties: false,
+                },
+            ],
         },
         create: function (context) {
             return {
                 ImportDeclaration: function (node) {
-                    noRootRelative(node, context);
+                    inspectImport(node, context);
                 },
             };
         },

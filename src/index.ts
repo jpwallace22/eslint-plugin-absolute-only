@@ -3,7 +3,7 @@ import { ImportDeclaration } from "estree";
 import * as fs from "fs";
 import * as path from "path";
 
-function findDirWithFile(filename: string): string {
+const findDirWithFile = (filename: string): string => {
   let dir = path.resolve(filename);
   do {
     dir = path.dirname(dir);
@@ -14,9 +14,9 @@ function findDirWithFile(filename: string): string {
   }
 
   return dir;
-}
+};
 
-function getBaseUrl(baseDir: string) {
+const getBaseUrl = (baseDir: string) => {
   let url = "";
 
   ["jsconfig.json", "tsconfig.json"].forEach(filename => {
@@ -30,17 +30,18 @@ function getBaseUrl(baseDir: string) {
   });
 
   return path.join(baseDir, url);
-}
+};
 
-const noRootRelative = (
+const inspectImport = (
   node: ImportDeclaration & Rule.NodeParentExtension,
   context: Rule.RuleContext
 ) => {
   const baseDir = findDirWithFile("package.json");
   const baseUrl = getBaseUrl(baseDir);
+  const options = context.options[0] || {};
 
   const source = node.source.value as string;
-  if (source.startsWith(".")) {
+  if (source.startsWith(options.allowRootRelative ? ".." : ".")) {
     const filename = context.getFilename();
 
     const absolutePath = path.normalize(
@@ -65,11 +66,22 @@ module.exports.rules = {
     meta: {
       fixable: "code",
       type: "layout",
+      schema: [
+        {
+          type: "object",
+          properties: {
+            allowRootRelative: {
+              type: "boolean",
+            },
+          },
+          additionalProperties: false,
+        },
+      ],
     },
     create: function (context: Rule.RuleContext): Rule.RuleListener {
       return {
         ImportDeclaration(node) {
-          noRootRelative(node, context);
+          inspectImport(node, context);
         },
       };
     },

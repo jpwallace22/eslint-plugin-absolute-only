@@ -48,35 +48,37 @@ function getBaseUrl(baseDir) {
     });
     return path.join(baseDir, url);
 }
-module.exports.rules = {
-    imports: {
+var noRootRelative = function (node, context) {
+    var baseDir = findDirWithFile("package.json");
+    var baseUrl = getBaseUrl(baseDir);
+    var source = node.source.value;
+    if (source.startsWith(".")) {
+        var filename = context.getFilename();
+        var absolutePath = path.normalize(path.join(path.dirname(filename), source));
+        var expectedPath_1 = path.relative(baseUrl, absolutePath);
+        if (source !== expectedPath_1) {
+            return context.report({
+                node: node,
+                message: "Relative imports are not allowed. Use `".concat(expectedPath_1, "` instead of `").concat(source, "`."),
+                fix: function (fixer) {
+                    return fixer.replaceText(node.source, "'".concat(expectedPath_1, "'"));
+                },
+            });
+        }
+    }
+};
+module.exports = {
+    "absolute-only": {
         meta: {
-            fixable: true,
+            fixable: "code",
             type: "layout",
         },
         create: function (context) {
-            var baseDir = findDirWithFile("package.json");
-            var baseUrl = getBaseUrl(baseDir);
             return {
                 ImportDeclaration: function (node) {
-                    var source = node.source.value;
-                    if (source.startsWith(".")) {
-                        var filename = context.getFilename();
-                        var absolutePath = path.normalize(path.join(path.dirname(filename), source));
-                        var expectedPath_1 = path.relative(baseUrl, absolutePath);
-                        if (source !== expectedPath_1) {
-                            context.report({
-                                node: node,
-                                message: "Relative imports are not allowed. Use `".concat(expectedPath_1, "` instead of `").concat(source, "`."),
-                                fix: function (fixer) {
-                                    return fixer.replaceText(node.source, "'".concat(expectedPath_1, "'"));
-                                },
-                            });
-                        }
-                    }
+                    noRootRelative(node, context);
                 },
             };
         },
     },
 };
-//# sourceMappingURL=index.js.map

@@ -21,6 +21,9 @@
     "eslint-plugin",
     "absolute"
   ],
+  "scripts": {
+    "build": "npx tsc"
+  },
   "devDependencies": {
     "@types/eslint": "^8.4.1",
     "@types/estree": "^0.0.51",

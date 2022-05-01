@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * @fileoverview Rule to prefer absolute imports over relative imports and the module export
+ * @author Justin Wallace
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -25,7 +29,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = __importStar(require("fs"));
 var path = __importStar(require("path"));
-function findDirWithFile(filename) {
+var findDirWithFile = function (filename) {
     var dir = path.resolve(filename);
     do {
         dir = path.dirname(dir);
@@ -34,8 +38,8 @@ function findDirWithFile(filename) {
         throw "exit";
     }
     return dir;
-}
-function getBaseUrl(baseDir) {
+};
+var getBaseUrl = function (baseDir) {
     var url = "";
     ["jsconfig.json", "tsconfig.json"].forEach(function (filename) {
         var fpath = path.join(baseDir, filename);
@@ -47,36 +51,50 @@ function getBaseUrl(baseDir) {
         }
     });
     return path.join(baseDir, url);
-}
+};
+var inspectImport = function (node, context) {
+    var baseDir = findDirWithFile("package.json");
+    var baseUrl = getBaseUrl(baseDir);
+    var options = context.options[0] || {};
+    var source = node.source.value;
+    if (source.startsWith(options.allowRootRelative ? ".." : ".")) {
+        var filename = context.getFilename();
+        var absolutePath = path.normalize(path.join(path.dirname(filename), source));
+        var expectedPath_1 = path.relative(baseUrl, absolutePath);
+        if (source !== expectedPath_1) {
+            return context.report({
+                node: node,
+                message: "Relative imports are not allowed. Use `".concat(expectedPath_1, "` instead of `").concat(source, "`."),
+                fix: function (fixer) {
+                    return fixer.replaceText(node.source, "'".concat(expectedPath_1, "'"));
+                },
+            });
+        }
+    }
+};
 module.exports.rules = {
     imports: {
         meta: {
-            fixable: true,
+            fixable: "code",
             type: "layout",
+            schema: [
+                {
+                    type: "object",
+                    properties: {
+                        allowRootRelative: {
+                            type: "boolean",
+                        },
+                    },
+                    additionalProperties: false,
+                },
+            ],
         },
         create: function (context) {
-            var baseDir = findDirWithFile("package.json");
-            var baseUrl = getBaseUrl(baseDir);
             return {
                 ImportDeclaration: function (node) {
-                    var source = node.source.value;
-                    if (source.startsWith(".")) {
-                        var filename = context.getFilename();
-                        var absolutePath = path.normalize(path.join(path.dirname(filename), source));
-                        var expectedPath_1 = path.relative(baseUrl, absolutePath);
-                        if (source !== expectedPath_1) {
-                            context.report({
-                                node: node,
-                                message: "Relative imports are not allowed. Use `".concat(expectedPath_1, "` instead of `").concat(source, "`."),
-                                fix: function (fixer) {
-                                    return fixer.replaceText(node.source, "'".concat(expectedPath_1, "'"));
-                                },
-                            });
-                        }
-                    }
+                    inspectImport(node, context);
                 },
             };
         },
     },
 };
-//# sourceMappingURL=index.js.map

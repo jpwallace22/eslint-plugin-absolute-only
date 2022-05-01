@@ -1,5 +1,11 @@
+/**
+ * @fileoverview Rule to prefer absolute imports over relative imports and the module export
+ * @author Justin Wallace
+ */
+
 import { Rule } from "eslint";
 import { ImportDeclaration } from "estree";
+
 import * as fs from "fs";
 import * as path from "path";
 

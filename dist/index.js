@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * @fileoverview Rule to prefer absolute imports over relative imports and the module export
+ * @author Justin Wallace
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);

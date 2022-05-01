@@ -79,4 +79,3 @@ module.exports.rules = {
         },
     },
 };
-//# sourceMappingURL=index.js.map

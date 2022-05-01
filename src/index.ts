@@ -60,8 +60,8 @@ const noRootRelative = (
   }
 };
 
-module.exports = {
-  "absolute-only": {
+module.exports.rules = {
+  imports: {
     meta: {
       fixable: "code",
       type: "layout",

@@ -67,8 +67,8 @@ var noRootRelative = function (node, context) {
         }
     }
 };
-module.exports = {
-    "absolute-only": {
+module.exports.rules = {
+    imports: {
         meta: {
             fixable: "code",
             type: "layout",

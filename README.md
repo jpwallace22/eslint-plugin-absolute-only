@@ -1,5 +1,9 @@
 # eslint-plugin-absolute-only
 
+![npm bundle size](https://img.shields.io/bundlephobia/min/eslint-plugin-absolute-only?color=007173)
+![npm](https://img.shields.io/npm/dm/eslint-plugin-absolute-only?color=007173)
+![NPM](https://img.shields.io/npm/l/eslint-plugin-absolute-only?color=007173)
+
 ESLint zero dependency plugin to prefer absolute imports. By default, the plugin strictly allows absolute imports. However, with the `allowRootRelative` setting, you can be a little more relaxed if you prefer.
 
 This plugin will automatically fix your code using ESLint's --fix option.
